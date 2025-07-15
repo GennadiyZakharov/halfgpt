@@ -1,0 +1,11 @@
+[project]
+name = "halfgpt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "datasets>=3.6.0",
+    "torch>=2.7.1",
+    "transformers>=4.53.1",
+]
