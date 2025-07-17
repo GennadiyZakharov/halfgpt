@@ -3,6 +3,7 @@ import torch
 import torch.optim as optim
 import torch.nn as nn
 from datasets import load_dataset
+import time
 
 from halfgpt import data_loader, gpt_model
 
@@ -38,6 +39,7 @@ def main():
     model.train()
     for epoch in range(num_epochs):
         print(f"Epoch {epoch}/{num_epochs}")
+        epoch_start_time = time.time()
         for n, batch in enumerate(train_dataloader):  # dataloader yields (input_ids, target_ids) tensors
             inputs = batch["input_ids"].to(device)    # shape (B, L)
             targets = batch["labels"].to(device)      # shape (B, L)
@@ -49,7 +51,9 @@ def main():
             loss.backward()
             optimizer.step()
 
-        print(f"Epoch {epoch}, training loss: {loss.item():.4f}")
+        epoch_duration = time.time() - epoch_start_time
+        print(f"Epoch {epoch}, training loss: {loss.item():.4f}, duration: {epoch_duration:.2f} seconds")
+        
 
 if __name__ == "__main__":
     main()
