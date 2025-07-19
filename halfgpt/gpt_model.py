@@ -13,6 +13,8 @@ class TransformerBlock(nn.Module):
         self.ln1 = nn.LayerNorm(embed_dim)
         # Multi-head self-attention (batch_first allows input as (batch, seq, embed))
         self.attn = nn.MultiheadAttention(embed_dim, num_heads, dropout=dropout_rate, batch_first=True)
+        # Dropout layer for residual connections
+        self.dropout = nn.Dropout(dropout_rate)
         # Layer normalization
         self.ln2 = nn.LayerNorm(embed_dim)
         # Two-layer feed-forward network
@@ -21,8 +23,7 @@ class TransformerBlock(nn.Module):
             nn.GELU(),
             nn.Linear(4 * embed_dim, embed_dim)   # project back to hidden size
         )
-        # Dropout layer for residual connections
-        self.dropout = nn.Dropout(dropout_rate)
+
         # Causal mask will be provided from outside (for efficiency, handled in GPTModel)
 
     def forward(self, x, attn_mask=None):
